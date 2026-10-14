@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+
+# local tapes can contain real traffic: never commit them
+*.db
+*.tape.json
+*.har
+!tests/fixtures/*.har
+.env

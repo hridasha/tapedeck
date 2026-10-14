@@ -1,0 +1,21 @@
+name: tapedeck
+
+services:
+  tapedeck:
+    build: .
+    ports:
+      - "8700:8700"          # the web page
+      - "9000-9010:9000-9010" # recorders and fake servers started from the page (use ports in this range)
+    volumes:
+      - tapedeck-data:/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets Tapedeck reach an API running on your computer
+
+  sample_api:
+    build: .
+    command: ["uvicorn", "examples.sample_api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+
+volumes:
+  tapedeck-data:

@@ -1,0 +1,10 @@
+.venv
+__pycache__
+*.pyc
+*.db
+web/node_modules
+web/dist
+.git
+tapedeck.egg-info
+.pytest_cache
+.ruff_cache

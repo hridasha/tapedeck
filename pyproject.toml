@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tapedeck"
+version = "0.1.0"
+description = "Record an API's traffic once, then mock it, replay it and load-test it."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110", "python-multipart>=0.0.9",
+    "uvicorn[standard]>=0.29",
+    "httpx>=0.27",
+    "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+tapedeck = "tapedeck.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["tapedeck*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]  # long fixture lines are fine in tests
+"tapedeck/replay/report.py" = ["E501"]  # inline CSS
+"tapedeck/load/report.py" = ["E501"]  # inline CSS and HTML
+"tapedeck/cli.py" = ["E501"]  # long --help texts
+"tapedeck/core/scrub.py" = ["E501"]  # one long regular expression
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["typer.Argument", "typer.Option", "fastapi.Depends", "fastapi.File", "fastapi.Form"]  # Typer's normal way to declare options
